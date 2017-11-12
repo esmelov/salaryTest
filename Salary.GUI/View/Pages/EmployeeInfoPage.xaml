@@ -1,0 +1,622 @@
+﻿<Page x:Class="Salary.GUI.View.Pages.EmployeeInfoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:System="clr-namespace:System;assembly=mscorlib"
+      xmlns:cc="clr-namespace:Salary.GUI.Converters"
+      xmlns:local="clr-namespace:Salary.GUI.View.Pages"
+      mc:Ignorable="d" 
+      Title="EmployeeInfoPage">
+
+    <Page.Resources>
+        <cc:DateTimeConverter x:Key="DateConverter" />
+        <cc:CommandsConverter x:Key="CmdConverter" />
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Template" Value="{StaticResource VerticalScrollBar}" />
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="95"/>
+            <RowDefinition Height="95"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0"
+                      Name="mainScroll"
+                      Margin="5"
+                      BorderBrush="Gray"
+                      CanContentScroll="False"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+
+            <StackPanel>
+
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="0"
+                            Grid.RowSpan="12"
+                            Margin="-5 -5 -5 -4"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="3"/>
+
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="0"
+                            BorderBrush="Black"
+                            BorderThickness="0 0 0 1"/>
+
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="1"
+                            BorderBrush="LightGray"
+                            BorderThickness="0 0 0 1"/>
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="2"
+                            BorderBrush="LightGray"
+                            BorderThickness="0 0 0 1"/>
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="3"
+                            BorderBrush="LightGray"
+                            BorderThickness="0 0 0 1"/>
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="4"
+                            BorderBrush="LightGray"
+                            BorderThickness="0 0 0 1"/>
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="5"
+                            BorderBrush="LightGray"
+                            BorderThickness="0 0 0 1"/>
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="6"
+                            BorderBrush="LightGray"
+                            BorderThickness="0 0 0 1"/>
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="7"
+                            BorderBrush="LightGray"
+                            BorderThickness="0 0 0 1"/>
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="8"
+                            BorderBrush="LightGray"
+                            BorderThickness="0 0 0 1"/>
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="9"
+                            BorderBrush="LightGray"
+                            BorderThickness="0 0 0 1"/>
+                    <Border Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="10"
+                            BorderBrush="LightGray"
+                            BorderThickness="0 0 0 1"/>
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="0"
+                               Margin="-2 -2 0 5"
+                               Text="Employee Card" />
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="1"
+                               Margin="5"
+                               Text="First Name: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="1"
+                               Margin="5"
+                               Text="{Binding CurrentEmployee.FirstName}" />
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="2"
+                               Margin="5"
+                               Text="Last Name: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="2"
+                               Margin="5"
+                               Text="{Binding CurrentEmployee.LastName}" />
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="3"
+                               Margin="5"
+                               Text="Date of Birth: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="3"
+                               Margin="5"
+                               Text="{Binding CurrentEmployee.BirthDate, 
+                                              Converter={StaticResource DateConverter},
+                                              StringFormat='{}{0:dd.MM.yyyy}'}" />
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="4"
+                               Margin="5"
+                               Text="Address: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="4"
+                               Margin="5">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} {1} {2} {3}">
+                                <Binding Path="CurrentEmployee.Address.CountryName" />
+                                <Binding Path="CurrentEmployee.Address.CityName" />
+                                <Binding Path="CurrentEmployee.Address.StreetName" />
+                                <Binding Path="CurrentEmployee.Address.Home" />
+                                <Binding Path="CurrentEmployee.Address.AdditionalInfo" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="5"
+                               Margin="5"
+                               Text="Phone Number: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="5"
+                               Margin="5"
+                               Text="{Binding CurrentEmployee.Contact.PhoneNumber}" />
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="6"
+                               Margin="5"
+                               Text="Email Address: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="6"
+                               Margin="5"
+                               Text="{Binding CurrentEmployee.Contact.EmailAddress}" />
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="7"
+                               Margin="5"
+                               Text="Category: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="7"
+                               Margin="5"
+                               Text="{Binding CurrentEmployee.Category.Name}" />
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="8"
+                               Margin="5"
+                               Text="Salary Rate: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="8"
+                               Margin="5">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:0.00} {1}">
+                                <Binding Path="CurrentEmployee.Category.SalaryRate" />
+                                <Binding Path="CurrentEmployee.Category.Currency.Code" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="9"
+                               Margin="5"
+                               Text="Boss Name: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="9"
+                               Margin="5">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} {1}">
+                                <Binding Path="CurrentEmployee.Boss.FirstName" />
+                                <Binding Path="CurrentEmployee.Boss.LastName" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="10"
+                               Margin="5"
+                               Text="Date of Hiring: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="10"
+                               Margin="5"
+                               Text="{Binding CurrentEmployee.BeginDate, 
+                                              Converter={StaticResource DateConverter},
+                                              StringFormat='{}{0:dd.MM.yyyy}'}" />
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="11"
+                               Margin="5"
+                               Text="Date of Dismissal: " />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="11"
+                               Margin="5"
+                               Text="{Binding CurrentEmployee.DismissalDate, 
+                                              Converter={StaticResource DateConverter},
+                                              StringFormat='{}{0:dd.MM.yyyy}'}" />
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentEmployee}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
+
+                <Expander Header="Subordinate Employees"
+                          Margin="0 0 0 1"
+                          BorderBrush="Gray"
+                          IsEnabled="{Binding SubordinateIsEnabled}"
+                          BorderThickness="1">
+                    <ListView Height="300"
+                              ItemsSource="{Binding CurrentEmployee.Subordinates}" >
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding  StringFormat="{}Name: {0} {1}" Mode="OneWay">
+                                                <Binding Path="FirstName" />
+                                                <Binding Path="LastName" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+
+                                    <TextBlock Text="{Binding Path=BirthDate,
+                                                              Converter={StaticResource ResourceKey=DateConverter},
+                                                              StringFormat='{}Date of birth: {0:dd.MM.yyyy}'}" />
+
+                                    <TextBlock Text="{Binding Path=BeginDate,
+                                                              Converter={StaticResource ResourceKey=DateConverter},
+                                                              StringFormat='{}Started working on {0:dd.MM.yyyy}'}" />
+
+                                    <CheckBox IsHitTestVisible="False"
+                                              IsChecked="{Binding DismissalDate}">
+                                        <TextBlock Text="{Binding Path=DismissalDate,
+                                                                  Converter={StaticResource ResourceKey=DateConverter},
+                                                                  StringFormat='{}Dismissal {0:dd.MM.yyyy}'}" />
+                                        <CheckBox.Style>
+                                            <Style TargetType="CheckBox">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsChecked}" Value="True">
+                                                        <Setter Property="Foreground" Value="Red" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </CheckBox.Style>
+                                    </CheckBox>
+
+                                    <TextBlock Text="{Binding Path=Category.Name,
+                                                              StringFormat='{}Category is {0}'}" />
+
+                                    <Border BorderBrush="Black"
+                                            Margin="0 3 0 5"
+                                            BorderThickness="0 0 0 1" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Expander.Style>
+                        <Style TargetType="Expander">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentEmployee.Category.HasEmployees}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Expander.Style>
+                </Expander>
+
+                <Expander Header="Calculation of Employee Salary"
+                          BorderBrush="Gray"
+                          BorderThickness="1"
+                          Margin="0 0 0 1">
+
+                    <Grid Margin="5"
+                          Width="500"
+                          HorizontalAlignment="Center">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Margin="5"
+                                   Text="Experience " />
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="0"
+                                   Margin="5"
+                                   Text="{Binding Experience,
+                                                  Mode=OneWay,
+                                                  StringFormat='{}{0} year(s)',
+                                                  FallbackValue='0 year'}" />
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="1"
+                                   Margin="5"
+                                   Text="Salary Rate " />
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="1"
+                                   Margin="5">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0:0.00} {1}"
+                                              FallbackValue="0.00">
+                                    <Binding Path="CurrentEmployee.Category.SalaryRate" />
+                                    <Binding Path="CurrentEmployee.Category.Currency.Code" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="2"
+                                   Margin="5"
+                                   Text="Category Surcharge Percent " />
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="2"
+                                   Margin="5">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0:0.00}%({1:0.00}%)"
+                                              FallbackValue="0.00%(0.00%)">
+                                    <Binding Path="CurrentEmployee.Category.MinPercent" />
+                                    <Binding Path="CurrentEmployee.Category.MaxPercent" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="3"
+                                   Margin="5"
+                                   Text="Head Surcharge Percent " />
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="3"
+                                   Margin="5"
+                                   Text="{Binding Path=CurrentEmployee.Boss.Category.Surcharge,
+                                                  StringFormat='{}{0:0.00}%',
+                                                  FallbackValue='0.00%',
+                                                  Mode=OneWay,
+                                                  UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Button Grid.Column="0"
+                                Grid.Row="4"
+                                Margin="5"
+                                Style="{StaticResource DefaultButtonStyle}"
+                                Content="Calculate on" 
+                                Command="{Binding CalculateSalaryCmd}">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource CmdConverter}">
+                                    <Binding ElementName="salPicker"
+                                             Path="SelectedDate"/>
+                                    <Binding Path="CurrentEmployee" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                        <DatePicker Name="salPicker"
+                                    Grid.Column="1"
+                                    Grid.Row="4" 
+                                    Margin="5"
+                                    SelectedDate="{x:Static System:DateTime.Now}"
+                                    DisplayDateStart="{Binding CurrentEmployee.BeginDate,
+                                                               Converter={StaticResource DateConverter}}"
+                                    DisplayDateEnd="{x:Static System:DateTime.Now}" />
+
+                        <Button Grid.Column="0"
+                                Grid.Row="5"
+                                Margin="5"
+                                Style="{StaticResource DefaultButtonStyle}"
+                                Content="Save" 
+                                Command="{Binding SaveSalaryCmd}"
+                                CommandParameter="{Binding EmployeeSalary}" />
+                        
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="5"
+                                   Margin="5"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0:0.00} {1}"
+                                              FallbackValue="0.00">
+                                    <Binding Path="EmployeeSalary.SalaryRate"
+                                             Mode="OneWay"
+                                             UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding Path="EmployeeSalary.Currency.Code"
+                                             Mode="OneWay"
+                                             UpdateSourceTrigger="PropertyChanged" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                    </Grid>
+                    <Expander.Style>
+                        <Style TargetType="Expander">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentEmployee.DismissalDate}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Expander.Style>
+                </Expander>
+
+                <Expander Name="hist"
+                          Header="History of Employee Salary"
+                          BorderBrush="Gray"
+                          BorderThickness="1"
+                          Margin="0 0 0 1">
+                    <DataGrid AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              CanUserReorderColumns="False"
+                              CanUserResizeColumns="False"
+                              CanUserResizeRows="False"
+                              ItemsSource="{Binding Path=CurrentEmployee.Salary}"
+                              HeadersVisibility="Column">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Date From"
+                                                Width="130"
+                                                Binding="{Binding DateFrom,
+                                                                  Converter={StaticResource DateConverter},
+                                                                  StringFormat='{}{0:dd.MM.yyyy}'}" />
+                            <DataGridTextColumn Header="Date To"
+                                                Width="130"
+                                                Binding="{Binding DateTo,
+                                                                  Converter={StaticResource DateConverter},
+                                                                  StringFormat='{}{0:dd.MM.yyyy}'}" />
+                            <DataGridTextColumn Header="Salary Rate"
+                                                Width="130"
+                                                Binding="{Binding SalaryRate,
+                                                                  StringFormat='{}{0:0.00}'}" />
+                            <DataGridTextColumn Header="Currency"
+                                                Width="120"
+                                                Binding="{Binding Currency.Code}" />
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                </Expander>
+
+            </StackPanel>
+            <ScrollViewer.Style>
+                <Style TargetType="ScrollViewer">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentEmployee}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ScrollViewer.Style>
+        </ScrollViewer>
+
+        <Border Grid.Row="1"
+                Name="bord"
+                Margin="5 0 5 5"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                CornerRadius="3" />
+
+        <StackPanel Grid.Column="1"
+                    Grid.Row="1"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Center">
+
+            <TextBlock Text="Calculate Salary for all Employees"
+                       Margin="5 5 0 5"/>
+
+            <Grid Margin="10 5 10 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Margin="0 0 5 0"
+                        Content="Calculate on"
+                        Command="{Binding CalculateAllSalaryCmd}"
+                        Style="{StaticResource DefaultButtonStyle}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource CmdConverter}">
+                            <Binding ElementName="totalCalcPicker"
+                                     Path="SelectedDate"/>
+                            <Binding Path="Employees" />
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
+                <DatePicker Name="totalCalcPicker"
+                            Grid.Column="1"
+                            DisplayDateEnd="{x:Static System:DateTime.Now}"
+                            SelectedDate="{x:Static System:DateTime.Now}"
+                            SelectedDateFormat="Short">
+                </DatePicker>
+            </Grid>
+            <ProgressBar Margin="10 12 10 0"  
+                         Height="10"
+                         Minimum="0"
+                         Maximum="100"
+                         Value="{Binding CalcSalaryPBValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+
+        <Border Grid.Row="2"
+                Margin="5 0 5 5"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                CornerRadius="3" />
+
+        <StackPanel Grid.Row="2"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Center">
+
+            <TextBlock Text="Total Salary of Employees"
+                       Margin="0 5 0 5"/>
+
+            <Grid Margin="5 5 5 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Margin="0 0 5 0"
+                        Content="Calculate from"
+                        Command="{Binding CalculateTotalSumCmd}"
+                        Style="{StaticResource DefaultButtonStyle}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource CmdConverter}">
+                            <Binding ElementName="sumPicker"
+                                     Path="SelectedDate"/>
+                            <Binding Path="Employees" />
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
+
+                <DatePicker Name="sumPicker"
+                            Grid.Column="1"
+                            DisplayDateEnd="{x:Static System:DateTime.Now}"
+                            SelectedDate="{x:Static System:DateTime.Now}"
+                            SelectedDateFormat="Short">
+                </DatePicker>
+            </Grid>
+            <TextBlock Margin="5 5 0 0"
+                       Text="{Binding ElementName=sumPicker,
+                                      Path=SelectedDate,
+                                      StringFormat='{}Total from {0:dd.MM.yyyy:}',
+                                      FallbackValue=Total:}" />
+            <TextBlock TextAlignment="Right"
+                       Margin="0 -5 5 0"
+                       Text="{Binding TotalSalary, StringFormat='{}{0:0.00}', FallbackValue=0.00}" />
+        </StackPanel>
+    </Grid>
+</Page>
