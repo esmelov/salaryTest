@@ -9,6 +9,8 @@
                 <ResourceDictionary Source="Resources/ScrollBarDictionary.xaml" />
                 <ResourceDictionary Source="Resources/ButtonsDictionary.xaml" />
                 <ResourceDictionary Source="Resources/ListViewDictionary.xaml" />
+                <ResourceDictionary Source="Resources/TextBoxDictionary.xaml" />
+                <ResourceDictionary Source="Resources/DatePickerDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

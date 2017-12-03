@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Salary.Core.Model
@@ -9,6 +10,7 @@ namespace Salary.Core.Model
         /// <summary>
         /// Unique number of the Employee
         /// </summary>
+        [Key]
         public int Id { get; set; }
         /// <summary>
         /// First Name of the Employee
@@ -43,7 +45,8 @@ namespace Salary.Core.Model
         /// <summary>
         /// Salaries of the Employee
         /// </summary>
-        public IEnumerable<Salary> Salary { get; set; }
+        [ForeignKey("EmployeeId")]
+        public virtual ICollection<Salary> Salary { get; set; }
         /// <summary>
         /// Unique number of the Boss of the Employee
         /// </summary>
@@ -55,7 +58,8 @@ namespace Salary.Core.Model
         /// <summary>
         /// Subordinates of the Employee
         /// </summary>
-        public IEnumerable<Employee> Subordinates { get; set; }
+        [ForeignKey("BossId")]
+        public virtual ICollection<Employee> Subordinates { get; set; }
         /// <summary>
         /// Date of hiring
         /// </summary>

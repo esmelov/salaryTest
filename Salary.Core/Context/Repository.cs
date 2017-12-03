@@ -22,13 +22,7 @@ namespace Salary.Core.Context
         {
             get
             {
-                var tmpEmp = _dbContext.Employee.ToList();
-                tmpEmp.ForEach(x =>
-                {
-                    x.Salary = _dbContext.Salary.Where(w => w.EmployeeId == x.Id).ToList();
-                    x.Subordinates = _dbContext.Employee.Where(y => y.BossId == x.Id).Select(s => s).ToList();
-                });
-                return tmpEmp;
+                return _dbContext.Employee;
             }
         }
         public IEnumerable<Employee> GetBosses

@@ -13,8 +13,9 @@ using System.Threading;
 
 namespace Salary.GUI.ViewModel
 {
-    class MainWindowViewModel : INotifyPropertyChanged
+    class MainWindowViewModel : INotifyPropertyChanged, IDisposable
     {
+        #region Private Variables
         private ObservableCollection<Employee> _employees;
         private Employee _currentEmployee;
         private Employee _tempEmployee;
@@ -23,9 +24,10 @@ namespace Salary.GUI.ViewModel
         private IRepository _employeeRepository;
         private double _totalSalary;
         private double _calcSalaryPBValue;
-        private String _currentPage;
+        private string _currentPage;
         private bool _negativeExecuting = true;
 
+        #region Commands 
         private RelayCommand _addEmployeeCmd;
         private RelayCommand _calculateTotalSumCmd;
         private RelayCommand _deleteEmployeeCmd;
@@ -35,6 +37,13 @@ namespace Salary.GUI.ViewModel
         private RelayCommand _saveSalaryCmd;
         private RelayCommand _calculateSalary;
         private RelayCommand _calculateAllSalaryCmd;
+        #endregion
+
+        #endregion
+
+        #region Public Variables
+
+        #region Constructors
 
         public MainWindowViewModel(IRepository employeeRepository, ISalaryCalculator salaryCalculator)
         {
@@ -46,10 +55,9 @@ namespace Salary.GUI.ViewModel
             CalcSalaryPBValue = 0;
         }
 
-        private void _salaryCalculator_OneCalculate(object sender, double e)
-        {
-            CalcSalaryPBValue += e;
-        }
+        #endregion
+
+        #region Properties
 
         public ObservableCollection<Employee> Employees
         {
@@ -181,6 +189,8 @@ namespace Salary.GUI.ViewModel
             }
         }
 
+        #region Commands
+
         public RelayCommand AddEmployeeCmd
         {
             get
@@ -198,6 +208,7 @@ namespace Salary.GUI.ViewModel
                     (_deleteEmployeeCmd = new RelayCommand(obj =>
                     {
                         _dismissEmployee(obj);
+                        OnPropertyChanged("CurrentEmployee");
                         Employees = new ObservableCollection<Employee>(_employeeRepository.GetEmployees);
                     }, obj => _canDismissEmployee(obj)));
             }
@@ -211,7 +222,7 @@ namespace Salary.GUI.ViewModel
                     (_calculateTotalSumCmd = new RelayCommand(async obj =>
                     {
                         var values = (object[])obj;
-                        TotalSalary = await _calculateTotalSumAsync((IEnumerable<Employee>)values[1], (DateTime)values[0]);
+                        TotalSalary = await _salaryCalculator.AsyncCalculateSumSalary((IEnumerable<Employee>)values[1], (DateTime)values[0]);//await _calculateTotalSumAsync((IEnumerable<Employee>)values[1], (DateTime)values[0]);
                     }, obj =>  _canCalculateTotalSum(obj)));
             }
         }
@@ -219,10 +230,11 @@ namespace Salary.GUI.ViewModel
         public RelayCommand ModifyEmployeeCmd
         {
             get
-            {
+            {                
                 return _modifyEmployeeCmd ??
-                    (_modifyEmployeeCmd = new RelayCommand(obj =>
+                    (_modifyEmployeeCmd = new RelayCommand(async obj =>
                     {
+                        NegativeExecuting = false;
                         var emp = (Employee)obj;
                         if (emp.Id == 0)
                             TempEmployee = new Employee()
@@ -236,8 +248,8 @@ namespace Salary.GUI.ViewModel
                         {
                             TempEmployee = emp.Copy();
                         }
+                        await Task.Delay(500);
                         CurrentPage = "Pages/ModifyEmployeePage.xaml";
-                        NegativeExecuting = false;
                     }, obj => _canModify(obj)));
             }
         }
@@ -259,7 +271,6 @@ namespace Salary.GUI.ViewModel
                         CurrentEmployee.Address.StreetName = t.Address.StreetName;
                         CurrentEmployee.Address.ExperationDate = t.Address.ExperationDate;
 
-                        //
                         CurrentEmployee.BeginDate = t.BeginDate;
                         CurrentEmployee.BirthDate = t.BirthDate;
                         CurrentEmployee.BossId = t.BossId;
@@ -270,7 +281,6 @@ namespace Salary.GUI.ViewModel
                         CurrentEmployee.Contact.ExperationDate = t.Contact.ExperationDate;
                         CurrentEmployee.Contact.PhoneNumber = t.Contact.PhoneNumber;
 
-                        //
                         CurrentEmployee.FirstName = t.FirstName;
                         CurrentEmployee.LastName = t.LastName;
 
@@ -287,9 +297,10 @@ namespace Salary.GUI.ViewModel
             get
             {
                 return _backToInfoCmd ??
-                    (_backToInfoCmd = new RelayCommand(obj =>
+                    (_backToInfoCmd = new RelayCommand(async obj =>
                     {
                         TempEmployee = null;
+                        await Task.Delay(500);
                         CurrentPage = "Pages/EmployeeInfoPage.xaml";
                         NegativeExecuting = true;
                     }));
@@ -337,13 +348,15 @@ namespace Salary.GUI.ViewModel
                         var values = (object[])obj;
                         DateTime onDT = ((DateTime)values[0]).AddSeconds(-1);
                         var tmpEmps = ((ObservableCollection<Employee>)values[1]).Where(w => w.DismissalDate == null && w.BeginDate.ToDateTime() < onDT && w.Id > 0);
-                        IEnumerable<Core.Model.Salary> tmpSalaries = await _calculateAllSalary(tmpEmps, onDT);
+                        IEnumerable<Core.Model.Salary> tmpSalaries = await _salaryCalculator.AsyncCalculateAllSalary(tmpEmps, onDT);
                         tmpSalaries = _employeeRepository.SaveEmployeeSalary(tmpSalaries.Where(w => w.Id == 0));
                         Employees = new ObservableCollection<Employee>(_employeeRepository.GetEmployees);
                         OnPropertyChanged("CurrentEmployee");
                     }, obj => _canCalculateTotalSum(obj)));
             }
         }
+
+        #endregion
 
         public string CurrentPage
         {
@@ -358,10 +371,19 @@ namespace Salary.GUI.ViewModel
             }
         }
 
+        #endregion
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName]string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+
+        #endregion
+
+        private void _salaryCalculator_OneCalculate(object sender, double e)
+        {
+            CalcSalaryPBValue += e;
         }
 
         private void _addEmployee(ObservableCollection<Employee> employees)
@@ -404,16 +426,15 @@ namespace Salary.GUI.ViewModel
                 if (emp.Contact != null)
                     emp.Contact.ExperationDate = DateTime.Now.ToUnixTimeStamp();
 
-                int i =_employeeRepository.Dismissal(emp);
-                OnPropertyChanged("CurrentEmployee");
+                int i = _employeeRepository.Dismissal(emp);
             }
         }
 
-        private bool _canDismissEmployee(object delCmpPrms)
+        private bool _canDismissEmployee(object parameters)
         {
-            if (delCmpPrms is object[] parameters && NegativeExecuting)
+            if (parameters is object[] values && NegativeExecuting)
             {
-                if (parameters[0] is Employee emp && parameters[1] is ObservableCollection<Employee> emps)
+                if (values[0] is Employee emp && values[1] is ObservableCollection<Employee> emps)
                     if (emp.DismissalDate == null)
                         return true;
             }
@@ -434,16 +455,13 @@ namespace Salary.GUI.ViewModel
 
         private bool _canCalculateTotalSum(object parameters)
         {
-            if (parameters == null)
-                return false;
-
-            var values = (object[])parameters;
-
-            if (values[1] is IEnumerable<Employee> employees && values[0] is DateTime dtStart)
+            if (parameters is object[] values)
             {
-                return employees.Count() > 0 && dtStart > DateTime.MinValue;
+                if (values[1] is IEnumerable<Employee> employees && values[0] is DateTime dtStart)
+                {
+                    return employees.Count() > 0 && dtStart > DateTime.MinValue;
+                }
             }
-
             return false;
         }
 
@@ -478,6 +496,11 @@ namespace Salary.GUI.ViewModel
                     return true;
             }
             return false;
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

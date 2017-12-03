@@ -1,0 +1,15 @@
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\Salary.Core.dll.config
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\Salary.Core.dll
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\Salary.Core.pdb
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\EntityFramework.dll
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\EntityFramework.SqlServer.dll
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\System.Data.SQLite.dll
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\System.Data.SQLite.EF6.dll
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\System.Data.SQLite.Linq.dll
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\EntityFramework.xml
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\EntityFramework.SqlServer.xml
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\System.Data.SQLite.xml
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\bin\Debug\System.Data.SQLite.dll.config
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\obj\Debug\Salary.Core.csproj.CoreCompileInputs.cache
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\obj\Debug\Salary.Core.dll
+d:\pers\documents\visual studio 2017\Projects\SalaryTest\Salary.Core\obj\Debug\Salary.Core.pdb

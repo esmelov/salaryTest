@@ -133,7 +133,7 @@
             <Button Grid.Column="0"
                     Margin="5 5 0 5"
                     Content="Add"
-                    Style="{StaticResource AddButtonStyle}"
+                    Style="{StaticResource LeftButtonStyle}"
                     Command="{Binding AddEmployeeCmd}"
                     CommandParameter="{Binding Employees}" />
             
@@ -147,7 +147,7 @@
             <Button Grid.Column="2"
                     Content="Dismiss"
                     Margin="0 5 5 5"
-                    Style="{StaticResource DeleteButtonStyle}"
+                    Style="{StaticResource RightButtonStyle}"
                     Command="{Binding DeleteEmployeeCmd}">
                 <Button.CommandParameter>
                     <MultiBinding Converter="{StaticResource CmdConverter}">
@@ -163,7 +163,7 @@
                Grid.RowSpan="2"
                Source="{Binding CurrentPage}"
                Navigated="Frame_Navigated"
-               NavigationUIVisibility="Hidden"/>
+               NavigationUIVisibility="Hidden" />
 
     </Grid>
 </Window>

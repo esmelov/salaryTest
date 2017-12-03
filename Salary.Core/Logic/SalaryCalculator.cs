@@ -12,7 +12,6 @@ namespace Salary.Core.Logic
     {
         public event EventHandler<double> OneSumCount;
         public event EventHandler<double> OneCalculate;
-
         public Model.Salary CalculateSalary(Employee currentEmployee, DateTime onDate)
         {
             Model.Salary curSalary = null;
@@ -37,13 +36,20 @@ namespace Salary.Core.Logic
             curSalary = new Model.Salary
             {
                 EmployeeId = currentEmployee.Id,
-                SalaryRate = salaryRate, 
+                SalaryRate = salaryRate,
                 CurrencyId = currentEmployee.Category.CurrencyId,
                 DateFrom = dateFrom,
                 DateTo = onDate.ToUnixTimeStamp(),
                 Currency = currentEmployee.Category.Currency
             };
             return curSalary;
+        }
+
+        public int GetExperience(Employee currentEmployee, DateTime onDate)
+        {
+            if (currentEmployee != null && onDate > DateTime.MinValue)
+                return onDate.Year - currentEmployee.BeginDate.ToDateTime().Year;
+            return 0;
         }
 
         private double _getTotalPercent(Employee currentEmployee, DateTime onDate)
@@ -56,13 +62,6 @@ namespace Salary.Core.Logic
                     totalPercent += currentEmployee.Boss.Category.Surcharge;
             }
             return totalPercent / 100;
-        }
-
-        public int GetExperience (Employee currentEmployee, DateTime onDate)
-        {
-            if (currentEmployee != null && onDate > DateTime.MinValue)
-                return onDate.Year - currentEmployee.BeginDate.ToDateTime().Year;
-            return 0;
         }
 
         private int _getFromDate(IEnumerable<Model.Salary> employeeSalary, DateTime onDate)
@@ -83,7 +82,7 @@ namespace Salary.Core.Logic
             double value = 100d / employees.Count();
             employees.ToList().ForEach(x =>
             {
-                sumSalary += x.Salary.Where(w => w.DateFrom.ToDateTime() >= afterDate || (w.DateFrom.ToDateTime() <= afterDate && afterDate <= w.DateTo.ToDateTime())).Sum(y => y.SalaryRate);
+                sumSalary += x.Salary.Where(w => w.DateFrom.ToDateTime() <= afterDate).Sum(y => y.SalaryRate);
                 OneSumCount?.Invoke(this, value);
             });
             return sumSalary;
@@ -91,10 +90,8 @@ namespace Salary.Core.Logic
 
         public async Task<double> AsyncCalculateSumSalary(IEnumerable<Employee> employees, DateTime afterDate)
         {
-            return await Task.Run(() =>
-             {
-                 return CalculateSumSalary(employees, afterDate);
-             });
+            await Task.Delay(5);
+            return CalculateSumSalary(employees, afterDate);
         }
 
         public IEnumerable<Model.Salary> CalculateAllSalary(IEnumerable<Employee> employees, DateTime onDate)
@@ -112,10 +109,8 @@ namespace Salary.Core.Logic
 
         public async Task<IEnumerable<Model.Salary>> AsyncCalculateAllSalary(IEnumerable<Employee> employees, DateTime onDate)
         {
-            return await Task.Run(() =>
-            {
-                return CalculateAllSalary(employees, onDate);
-            });
+            await Task.Delay(5);
+            return CalculateAllSalary(employees, onDate);
         }
     }
 }

@@ -6,7 +6,9 @@
       xmlns:System="clr-namespace:System;assembly=mscorlib"
       xmlns:cc="clr-namespace:Salary.GUI.Converters"
       xmlns:local="clr-namespace:Salary.GUI.View.Pages"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
+      Name="EmployeeInfo"
+      Background="White"
       Title="EmployeeInfoPage">
 
     <Page.Resources>
@@ -14,8 +16,73 @@
         <cc:CommandsConverter x:Key="CmdConverter" />
         <Style TargetType="{x:Type ScrollBar}">
             <Setter Property="Template" Value="{StaticResource VerticalScrollBar}" />
-        </Style>
+        </Style>        
     </Page.Resources>
+    
+    <Page.Style>
+        <Style TargetType="{x:Type Page}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding NegativeExecuting, Mode=OneWay}" Value="false">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ThicknessAnimation Duration="0:0:0.5" 
+                                                    From="0" 
+                                                    To="700 0 -700 0" 
+                                                    DecelerationRatio="0.9"
+                                                    Storyboard.TargetProperty="Margin" />
+                                <DoubleAnimation Duration="0:0:0.5"
+                                     From="1"
+                                     To="0"
+                                     Storyboard.TargetProperty="Opacity" />
+
+                                <ColorAnimation 
+                     Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)" 
+                     From="White" To="Red" RepeatBehavior="3x" 
+                     AutoReverse="True" />
+
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+
+
+                <DataTrigger Binding="{Binding NegativeExecuting, Mode=OneWay}" Value="true">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:0.5"
+                                     From="1"
+                                     To="0"
+                                                 AutoReverse="True"
+                                     Storyboard.TargetProperty="Opacity" />
+
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+
+            </Style.Triggers>
+        </Style>
+    </Page.Style>
+    
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <ThicknessAnimation Duration="0:0:0.5"
+                                        From="500 0 -500 0" 
+                                        To="0" 
+                                        DecelerationRatio="0.9" 
+                                        Storyboard.TargetProperty="Margin" />
+                    <DoubleAnimation Duration="0:0:0.5"
+                                     From="0"
+                                     To="1"
+                                     Storyboard.TargetProperty="Opacity" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -162,7 +229,7 @@
                                Grid.Row="4"
                                Margin="5">
                         <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0} {1} {2} {3}">
+                            <MultiBinding StringFormat="{}{0} {1} {2} {3} {4}">
                                 <Binding Path="CurrentEmployee.Address.CountryName" />
                                 <Binding Path="CurrentEmployee.Address.CityName" />
                                 <Binding Path="CurrentEmployee.Address.StreetName" />
@@ -544,8 +611,8 @@
                 <Button Grid.Column="0"
                         Margin="0 0 5 0"
                         Content="Calculate on"
-                        Command="{Binding CalculateAllSalaryCmd}"
-                        Style="{StaticResource DefaultButtonStyle}">
+                        Style="{StaticResource DefaultButtonStyle}"
+                        Command="{Binding CalculateAllSalaryCmd}">
                     <Button.CommandParameter>
                         <MultiBinding Converter="{StaticResource CmdConverter}">
                             <Binding ElementName="totalCalcPicker"
